@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>城市文旅轻漫游</title>
+    <!-- 高德地图安全配置（必须在 loader.js 之前设置） -->
+    <script>
+        window._AMapSecurityConfig = { securityJsCode: 'bba016f28bef27052321816329b4a0af' };
+    </script>
+    <!-- 高德地图 JS API Loader -->
+    <script src="https://webapi.amap.com/loader.js"></script>
+    <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars-bg">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+    </div>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-inner">
+            <h1 class="logo">🏙️ 城市轻漫游</h1>
+            <p class="tagline">发现每座城市的独特魅力</p>
+        </div>
+    </header>
+
+    <!-- 搜索区域 -->
+    <section class="search-section">
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="输入城市名称，开启漫游之旅…" autocomplete="off">
+            <button id="searchBtn">
+                <span class="search-icon">🔍</span>
+                探索
+            </button>
+        </div>
+        <div class="hot-cities">
+            <span>热门城市：</span>
+            <button class="city-tag" data-city="北京">北京</button>
+            <button class="city-tag" data-city="上海">上海</button>
+            <button class="city-tag" data-city="南京">南京</button>
+            <button class="city-tag" data-city="成都">成都</button>
+            <button class="city-tag" data-city="西安">西安</button>
+            <button class="city-tag" data-city="杭州">杭州</button>
+            <button class="city-tag" data-city="厦门">厦门</button>
+            <button class="city-tag" data-city="重庆">重庆</button>
+            <button class="city-tag" data-city="苏州">苏州</button>
+            <button class="city-tag" data-city="大理">大理</button>
+            <button class="city-tag" data-city="青岛">青岛</button>
+            <button class="city-tag" data-city="广州">广州</button>
+            <button class="city-tag" data-city="深圳">深圳</button>
+            <button class="city-tag" data-city="武汉">武汉</button>
+            <button class="city-tag" data-city="长沙">长沙</button>
+            <button class="city-tag" data-city="南昌">南昌</button>
+            <button class="city-tag" data-city="香港">香港</button>
+            <button class="city-tag" data-city="澳门">澳门</button>
+        </div>
+    </section>
+
+    <!-- 主内容区 -->
+    <main id="mainContent" class="main-content hidden">
+        <!-- 城市信息头部 -->
+        <div class="city-hero" id="cityHero">
+            <div class="city-hero-overlay">
+                <h2 id="cityName">成都</h2>
+                <p id="citySlogan">天府之国，熊猫故乡</p>
+                <div class="weather-badge" id="weatherBadge">
+                    <span>☀️ 28°C</span>
+                    <span>适宜出游</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航锚点 -->
+        <nav class="section-nav">
+            <a href="#map" class="nav-item active" data-section="map">🗺️ 地图</a>
+            <a href="#landmarks" class="nav-item" data-section="landmarks">🏛️ 地标</a>
+            <a href="#food" class="nav-item" data-section="food">🍜 美食</a>
+            <a href="#routes" class="nav-item" data-section="routes">📍 路线</a>
+            <a href="#stories" class="nav-item" data-section="stories">📖 故事</a>
+        </nav>
+
+        <!-- 城市地图 -->
+        <section id="map" class="content-section">
+            <div class="section-header">
+                <h3>🗺️ 城市地图</h3>
+                <p id="mapHint">点击右侧地标在地图上显示位置</p>
+            </div>
+            <div class="map-card">
+                <div class="map-toolbar">
+                    <button class="map-tool" data-tool="reset" title="重置视角">🎯 复位</button>
+                    <button class="map-tool" data-tool="landmarks" title="显示地标">📍 地标</button>
+                    <button class="map-tool" data-tool="food" title="显示美食">🍜 美食</button>
+                    <button class="map-tool" data-tool="route" title="显示路线">🛣️ 路线</button>
+                </div>
+                <div id="cityMap" class="city-map">
+                    <div class="map-loading" id="mapLoading">地图加载中…</div>
+                </div>
+                <div class="map-tip">由高德地图提供数据支持</div>
+            </div>
+        </section>
+
+        <!-- 地标轮播 -->
+        <section id="landmarks" class="content-section">
+            <div class="section-header">
+                <h3>🏛️ 城市地标</h3>
+                <p>滑动探索城市标志性景点</p>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev" id="prevBtn">◀</button>
+                <div class="carousel-track" id="landmarkTrack">
+                    <!-- JS 动态填充 -->
+                </div>
+                <button class="carousel-btn next" id="nextBtn">▶</button>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </section>
+
+        <!-- 本地美食 -->
+        <section id="food" class="content-section">
+            <div class="section-header">
+                <h3>🍜 本地美食</h3>
+                <p>舌尖上的城市记忆</p>
+            </div>
+            <div class="food-grid" id="foodGrid">
+                <!-- JS 动态填充 -->
+            </div>
+        </section>
+
+        <!-- 打卡路线 -->
+        <section id="routes" class="content-section">
+            <div class="section-header">
+                <h3>🛣️ 推荐打卡路线</h3>
+                <p>一日/两日/三日游精选路线</p>
+            </div>
+            <div class="route-tabs" id="routeTabs">
+                <button class="route-tab active" data-days="1">一日游</button>
+                <button class="route-tab" data-days="2">两日游</button>
+                <button class="route-tab" data-days="3">三日游</button>
+            </div>
+            <div class="timeline" id="routeTimeline">
+                <!-- JS 动态填充 -->
+            </div>
+        </section>
+
+        <!-- 人文小故事 -->
+        <section id="stories" class="content-section">
+            <div class="section-header">
+                <h3>📖 人文小故事</h3>
+                <p>聆听城市的过往与温情</p>
+            </div>
+            <div class="stories-scroll" id="storiesContainer">
+                <!-- JS 动态填充 -->
+            </div>
+        </section>
+
+        <!-- 漫游进度条 -->
+        <div class="roam-progress" id="roamProgress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="progress-text" id="progressText">漫游进度 0%</span>
+        </div>
+    </main>
+
+    <!-- 初始占位 -->
+    <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🗺️</div>
+        <h2>开启你的城市漫游</h2>
+        <p>输入城市名称或点击热门城市，开始探索吧</p>
+    </div>
+
+    <!-- 地标/位置详情弹窗 -->
+    <div class="poi-modal" id="poiModal">
+        <div class="poi-modal-card">
+            <div class="poi-modal-header">
+                <span id="poiModalEmoji">📍</span>
+                <h3 id="poiModalTitle">地标</h3>
+                <button class="poi-modal-close" id="poiModalClose">✕</button>
+            </div>
+            <div class="poi-modal-body" id="poiModalBody">加载中…</div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2026 城市文旅轻漫游 · 探索中国之美 · 地图数据：高德地图</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
