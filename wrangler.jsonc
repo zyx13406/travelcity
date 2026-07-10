@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "travelcity",
+  "compatibility_date": "2026-07-10",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "城市轻漫游"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
